@@ -60,15 +60,15 @@ sensor.greg_travel_time:
   icon: mdi:motorbike
   
 sensor.weather_apparent_temperature:
-    friendly_name: 'Outside Temperature'
+  friendly_name: 'Outside Temperature'
 
 sensor.weather_summary:
-    friendly_name: 'Weather'
-    icon: mdi:white-balance-sunny
+  friendly_name: 'Weather'
+  icon: mdi:white-balance-sunny
 
 sensor.speedtest_download:
-    friendly_name: 'Download'
-    icon: mdi:speedometer
+  friendly_name: 'Download'
+  icon: mdi:speedometer
 
 ####################################################################################
 #                                                                                  #
@@ -79,8 +79,8 @@ sensor.speedtest_download:
 ####################################################################################
 
 weblink.foscam_thomas:
-    friendly_name: Foscam Dashboard (Thomas's Room)
-    icon: mdi:camera
+  friendly_name: Foscam Dashboard (Thomas's Room)
+  icon: mdi:camera
 
 weblink.router:
   friendly_name: Router
