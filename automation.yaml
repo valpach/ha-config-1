@@ -1,0 +1,41 @@
+- alias: Restart HASS
+  trigger:
+    platform: state
+    entity_id: input_boolean.restart_hass
+    from: 'off'
+    to: 'on'
+  action:
+    service: homeassistant.restart
+
+- alias: Motion (Living Room)
+  trigger:
+    platform: state
+    entity_id: binary_sensor.fibaro_system_fgms001_motion_sensor_sensor_2
+    from: 'off'
+    to: 'on'
+  condition:
+    - condition: state
+      entity_id: group.family
+      state: not_home
+    - condition: state
+      entity_id: input_boolean.motion_livingroom_override
+      state: 'on'
+  action:
+      service: notify.notify
+      data:
+        message: 'The living room Fibaro has detected motion'
+        title: 'Motion Alert - Living Room'
+
+- alias: Reminder to enable alarm
+  trigger:
+    platform: state
+    entity_id: group.family
+    state: not_home
+  condition:
+    - condition: state
+      entity_id: group.alarms
+      state: off
+  action:
+    service: notify.notify
+    data:
+      title: 'Dont forget to enable the alarm!'

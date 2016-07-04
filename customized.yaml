@@ -1,0 +1,91 @@
+
+####################################################################################
+#                                                                                  #
+#                                                                                  #
+#                                DEVICES                                           #
+#                                                                                  #
+#                                                                                  #
+####################################################################################
+
+device_tracker.gregiphone:
+  friendly_name: 'Greg'
+  entity_picture: 'local/greg.jpg'
+
+device_tracker.lynetteiphone:
+  friendly_name: 'Lynette'
+  entity_picture: 'local/lynette.jpg'
+
+####################################################################################
+#                                                                                  #
+#                                                                                  #
+#                                INPUTS                                            #
+#                                                                                  #
+#                                                                                  #
+####################################################################################
+
+input_boolean.motion_livingroom_override:
+  friendly_name: 'Motion Alerts'
+  icon: mdi:alert
+
+input_boolean.restart_hass:
+  friendly_name: Restart HASS
+  initial: off
+  icon: mdi:recycle
+
+
+####################################################################################
+#                                                                                  #
+#                                                                                  #
+#                                SENSORS                                           #
+#                                                                                  #
+#                                                                                  #
+####################################################################################
+
+sensor.battery_gregiphone:
+  icon: mdi:cellphone-iphone
+  friendly_name: 'Greg''s iPhone'
+
+sensor.fibaro_system_fgms001_motion_sensor_temperature_2:
+  friendly_name: 'Temperature'
+
+sensor.fibaro_system_fgms001_motion_sensor_luminance_2:
+  friendly_name: 'Brightness'
+
+binary_sensor.fibaro_system_fgms001_motion_sensor_sensor_2:
+  friendly_name: 'Motion'
+  icon: mdi:bell-ring-outline
+
+sensor.greg_travel_time:
+  friendly_name: 'Travel Time'
+  icon: mdi:motorbike
+  
+sensor.weather_apparent_temperature:
+    friendly_name: 'Outside Temperature'
+
+sensor.weather_summary:
+    friendly_name: 'Weather'
+    icon: mdi:white-balance-sunny
+
+sensor.speedtest_download:
+    friendly_name: 'Download'
+    icon: mdi:speedometer
+
+####################################################################################
+#                                                                                  #
+#                                                                                  #
+#                                WEBLINKS                                          #
+#                                                                                  #
+#                                                                                  #
+####################################################################################
+
+weblink.foscam_thomas:
+    friendly_name: Foscam Dashboard (Thomas's Room)
+    icon: mdi:camera
+
+weblink.router:
+  friendly_name: Router
+  icon: mdi:router-wireless
+  
+weblink.cameras:
+  friendly_name: Cameras
+  icon: mdi:webcam

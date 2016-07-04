@@ -1,0 +1,162 @@
+homeassistant:
+  name: Home
+  latitude: !secret latitude
+  longitude: !secret longitude
+  temperature_unit: C
+  time_zone: Europe/London
+  customize: !include customized.yaml
+
+http:
+  api_password: !secret api_password
+  ssl_certificate: !secret ssl_certificate
+  ssl_key: !secret ssl_key
+  
+####################################################################################
+#                                                                                  #
+#                                                                                  #
+#                                COMPONENTS                                        #
+#                                                                                  #
+#                                                                                  #
+####################################################################################
+
+updater:
+history:
+logbook:
+frontend:
+discovery:
+
+ifttt:
+  key: !secret ifttt_key
+  
+automation: !include automation.yaml
+
+zwave:
+ usb_path: /dev/aeo
+ polling_interval: 10000
+ config: /srv/hass/hass_venv/lib/python3.4/site-packages/libopenzwave-0.3.1-py3.4-linux-armv7l.egg/config
+ customize:
+    sensor.fibaro_system_fgms001_motion_sensor_temperature_2:
+       polling_intensity: 1
+
+device_tracker:
+  platform: icloud
+  username: !secret icloud_username
+  password: !secret icloud_password
+
+notify:
+  platform: pushbullet
+  api_key: !secret pushbullet_key
+
+logger:
+    default: info
+    logs:
+     group.settings: critical
+
+     
+media_player:
+   platform: plex
+
+weblink:
+  entities:
+    - name: foscam_thomas
+      url: http://192.168.0.15/
+    - name: cameras
+      url: !secret motioneye_url
+    - name: router
+      url: http://192.168.0.1 
+      
+####################################################################################
+#                                                                                  #
+#                                                                                  #
+#                                SENSORS                                           #
+#                                                                                  #
+#                                                                                  #
+####################################################################################
+
+sensor:
+  - platform: google_travel_time
+    name: greg_travel_time
+    api_key: !secret google_key
+    origin: !secret home_postcode
+    destination: !secret work_postcode
+    options:
+      mode: driving
+      
+  - platform: speedtest 
+    monitored_conditions:
+      - download
+      
+  - platform: forecast
+    api_key: !secret forecast_key
+    monitored_conditions:
+      - summary
+      - apparent_temperature
+      
+  - platform: template
+    sensors:
+      battery_gregiphone:
+        unit_of_measurement: '%'
+        value_template: >-
+            {%- if states.device_tracker.gregiphone.attributes.battery %}
+                {{ states.device_tracker.gregiphone.attributes.battery }}
+            {% else %}
+                Unknown
+            {%- endif %}
+      battery_fibaro_livingroom:
+        friendly_name: 'Fibaro (Living Room)'
+        unit_of_measurement: '%'
+        value_template: >- # the battery for the Fibaro seems to jump around the different entities so keep looking for it on each until it's found
+          {%- if states.sensor.fibaro_system_fgms001_motion_sensor_luminance_2.attributes.battery_level %}
+
+            {{ states.sensor.fibaro_system_fgms001_motion_sensor_luminance_2.attributes.battery_level }}
+
+          {% elif states.sensor.fibaro_system_fgms001_motion_sensor_temperature_2.attributes.battery_level %}
+
+            {{ states.sensor.fibaro_system_fgms001_motion_sensor_temperature_2.attributes.battery }}
+
+          {% else %}
+            Unknown
+          {%- endif %} 
+
+####################################################################################
+#                                                                                  #
+#                                                                                  #
+#                                ZONES                                             #
+#                                                                                  #
+#                                                                                  #
+####################################################################################
+
+zone:
+  - name: SEL
+    latitude: 53.201563
+    longitude: -0.590652
+    icon: mdi:laptop-mac
+
+  - name: School
+    latitude: 53.269164
+    longitude: -0.657602
+    icon: mdi:school
+
+####################################################################################
+#                                                                                  #
+#                                                                                  #
+#                                INPUTS                                            #
+#                                                                                  #
+#                                                                                  #
+####################################################################################
+
+input_boolean:
+  restart_hass:
+    initial: off
+  motion_livingroom_override:
+    initial: on
+    
+####################################################################################
+#                                                                                  #
+#                                                                                  #
+#                                GROUPS                                            #
+#                                                                                  #
+#                                                                                  #
+####################################################################################
+    
+group: !include group.yaml

@@ -1,0 +1,83 @@
+####################################################################################
+#                                                                                  #
+#                                                                                  #
+#                                VIEWS                                             #
+#                                                                                  #
+#                                                                                  #
+####################################################################################
+
+default_view:
+  view: yes
+  entities:
+    - group.family
+    - group.weather
+    - group.living_room
+    - group.bedroom
+    - group.network
+
+devicestab:
+  name: Devices
+  view: yes
+  entities:
+    - group.locations
+    - group.allbatteries
+
+####################################################################################
+#                                                                                  #
+#                                                                                  #
+#                                GROUPS                                            #
+#                                                                                  #
+#                                                                                  #
+####################################################################################
+
+
+network:
+  name: Network
+  entities:
+    - input_boolean.restart_hass
+    - sensor.speedtest_download
+    - weblink.router
+    - weblink.cameras
+    - weblink.foscam_thomas
+
+weather:
+    name: Weather
+    entities:
+      - sensor.weather_apparent_temperature
+      - sensor.weather_summary
+
+locations:
+  name: Locations
+  entities:
+  - device_tracker.gregiphone
+  - device_tracker.gregsipad
+  - device_tracker.gregsipodtouch
+  - device_tracker.lynetteiphone
+  - device_tracker.lynettesipad    
+
+family:
+  entities:
+    - device_tracker.gregiphone
+    - sensor.greg_travel_time
+    - device_tracker.lynetteiphone
+
+living_room:
+  name: Living Room
+  icon: mdi:sofa
+  entities:
+    - input_boolean.motion_livingroom_override
+    - binary_sensor.fibaro_system_fgms001_motion_sensor_sensor_2
+    - sensor.fibaro_system_fgms001_motion_sensor_luminance_2
+    - sensor.fibaro_system_fgms001_motion_sensor_temperature_2
+
+bedroom:
+  name: Bedroom
+  entities:
+    - media_player.bedroom
+    - sensor.fibaro_system_fgms001_motion_sensor_luminance_2
+
+allbatteries:
+  name: Batteries
+  entities:
+    - sensor.battery_fibaro_livingroom
+    - sensor.battery_gregiphone
