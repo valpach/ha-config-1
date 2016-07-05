@@ -24,6 +24,8 @@ history:
 logbook:
 frontend:
 discovery:
+recorder:
+  purge_days: 4
 
 ifttt:
   key: !secret ifttt_key
