@@ -112,7 +112,7 @@ sensor:
 
           {% elif states.sensor.fibaro_system_fgms001_motion_sensor_temperature_2.attributes.battery_level %}
 
-            {{ states.sensor.fibaro_system_fgms001_motion_sensor_temperature_2.attributes.battery }}
+            {{ states.sensor.fibaro_system_fgms001_motion_sensor_temperature_2.attributes.battery_level }}
 
           {% else %}
             Unknown
