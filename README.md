@@ -23,4 +23,4 @@ I use the iCloud component for presence, which when combined with the Fibaro sen
 * If we haven't enabled motion detection it sends a pushbullet notification to remind us
 * If notifications _are_ on, and motion gets detected, send a pushbullet notification
 
-![UI](http://i.imgur.com/3KEEfmj.png)
+![UI](http://i.imgur.com/pqCYNfi.png)
