@@ -2,12 +2,13 @@ homeassistant:
   name: Home
   latitude: !secret latitude
   longitude: !secret longitude
-  temperature_unit: C
+  unit_system: metric
   time_zone: Europe/London
   customize: !include customized.yaml
 
 http:
   api_password: !secret api_password
+  # server_port: 443
   ssl_certificate: !secret ssl_certificate
   ssl_key: !secret ssl_key
   
@@ -34,11 +35,11 @@ automation: !include automation.yaml
 
 zwave:
  usb_path: /dev/aeo
- polling_interval: 10000
- config: /srv/hass/hass_venv/lib/python3.4/site-packages/libopenzwave-0.3.1-py3.4-linux-armv7l.egg/config
- customize:
-    sensor.fibaro_system_fgms001_motion_sensor_temperature_2:
-       polling_intensity: 1
+#  polling_interval: 10000
+#  config: /srv/hass/hass_venv/lib/python3.4/site-packages/libopenzwave-0.3.1-py3.4-linux-armv7l.egg/config
+#  customize:
+#     sensor.fibaro_system_fgms001_motion_sensor_temperature_2:
+#        polling_intensity: 1
 
 device_tracker:
   platform: icloud
@@ -54,19 +55,69 @@ logger:
     logs:
      group.settings: critical
 
-     
-media_player:
-   platform: plex
-
 weblink:
   entities:
     - name: foscam_thomas
-      url: http://192.168.0.15/
-    - name: cameras
+      url: http://192.168.1.61/
+    - name: foscam_hall
+      url: http://192.168.1.63:88/
+    - name: foscam_drive
+      url: http://192.168.1.62:88/
+    - name: foscam_garden
+      url: http://192.168.1.64:88/                
+    - name: MotionEye
       url: !secret motioneye_url
     - name: router
-      url: http://192.168.0.1 
-      
+      url: http://192.168.1.254/0000012803/gui/#/main/
+    - name: Transmission
+      url: http://192.168.1.65:9091/transmission/web/
+
+panel_iframe:
+  godaddy:
+    title: 'GoDaddy'
+    url: !secret godaddy_control_panel_url
+    icon: mdi:web
+
+shell_command:
+  thomas_camera_bed: !secret thomas_camera_bed_url
+  thomas_camera_floor: !secret thomas_camera_floor_url
+  thomas_camera_door: !secret thomas_camera_door_url
+
+script:
+  camera_thomas_bed:
+    sequence:
+      - service: shell_command.thomas_camera_bed
+
+  camera_thomas_floor:
+    sequence:
+      - service: shell_command.thomas_camera_floor
+
+  camera_thomas_door:
+    sequence:
+      - service: shell_command.thomas_camera_door
+
+  office_lights:
+    alias: "Turn on lights and set timer"
+    sequence:
+      - service: script.turn_off
+        data: 
+          entity_id: script.office_lights_off
+      - service: switch.turn_on
+        data:
+          entity_id: switch.aeotec_smart_energy_switch_gen5_switch_3
+      - service: script.turn_on
+        data:
+          entity_id: script.office_lights_off
+
+  office_lights_off:
+    alias: "Turn off lamp after 10 minutes"
+    sequence:
+      - delay:
+          minutes: 10
+      - service: switch.turn_off
+        data:
+          entity_id: switch.aeotec_smart_energy_switch_gen5_switch_3
+
 ####################################################################################
 #                                                                                  #
 #                                                                                  #
@@ -74,22 +125,21 @@ weblink:
 #                                                                                  #
 #                                                                                  #
 ####################################################################################
+binary_sensor:
+  - platform: template
+    sensors:
+      fibaro_4_motion:
+        value_template: "{{ is_state('sensor.fibaro_system_fgms001_motion_sensor_burglar_4_10', '8') }}"
+        sensor_class: motion
 
-sensor:
-  - platform: google_travel_time
-    name: greg_travel_time
-    api_key: !secret google_key
-    origin: !secret home_postcode
-    destination: !secret work_postcode
-    options:
-      mode: driving
-      
+        
+sensor:      
   - platform: speedtest 
     monitored_conditions:
       - download
       
-  - platform: forecast
-    api_key: !secret forecast_key
+  - platform: darksky
+    api_key: !secret darksky_key
     monitored_conditions:
       - summary
       - apparent_temperature
@@ -100,12 +150,12 @@ sensor:
         unit_of_measurement: '%'
         value_template: >-
             {%- if states.device_tracker.gregiphone.attributes.battery %}
-                {{ states.device_tracker.gregiphone.attributes.battery }}
+                {{ states.device_tracker.gregiphone.attributes.battery|round }}
             {% else %}
                 Unknown
             {%- endif %}
-      battery_fibaro_livingroom:
-        friendly_name: 'Fibaro (Living Room)'
+      battery_fibaro_office:
+        friendly_name: 'Fibaro (Office)'
         unit_of_measurement: '%'
         value_template: >- # the battery for the Fibaro seems to jump around the different entities so keep looking for it on each until it's found
           {%- if states.sensor.fibaro_system_fgms001_motion_sensor_luminance_2.attributes.battery_level %}
@@ -142,6 +192,38 @@ zone:
 ####################################################################################
 #                                                                                  #
 #                                                                                  #
+#                                CAMERAS                                           #
+#                                                                                  #
+#                                                                                  #
+####################################################################################
+camera:
+  - platform: mjpeg
+    name: Thomas
+    mjpeg_url: http://192.168.1.61/videostream.cgi
+    username: greg
+    password: !secret api_password
+  
+  - platform: foscam
+    name: Drive
+    ip: 192.168.1.62
+    username: greg
+    password: !secret api_password2
+    
+  - platform: foscam
+    name: Hall
+    ip: 192.168.1.63
+    username: greg
+    password: !secret api_password2
+          
+  - platform: foscam
+    name: Garden
+    ip: 192.168.1.64
+    username: greg
+    password: !secret foscam_garden_pass
+    
+####################################################################################
+#                                                                                  #
+#                                                                                  #
 #                                INPUTS                                            #
 #                                                                                  #
 #                                                                                  #
@@ -150,7 +232,7 @@ zone:
 input_boolean:
   restart_hass:
     initial: off
-  motion_livingroom_override:
+  motion_office_override:
     initial: on
     
 ####################################################################################

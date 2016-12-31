@@ -1,4 +1,6 @@
-- alias: Restart HASS
+## when the restart hass boolean is set to true, restart hass
+- alias: Restart HASS 
+  hide_entity: False
   trigger:
     platform: state
     entity_id: input_boolean.restart_hass
@@ -7,26 +9,49 @@
   action:
     service: homeassistant.restart
 
-- alias: Motion (Living Room)
+# - alias: Office motion detected, turn lights on
+#   hide_entity: False
+#   trigger:
+#     platform: state
+#     entity_id: binary_sensor.fibaro_system_fgms001_motion_sensor_sensor_2_0
+#     to: 'on'
+#   action:
+#     service: switch.turn_on
+#     entity_id: switch.aeotec_smart_energy_switch_gen5_switch_3_0
+
+# - alias: No motion detected, begin 10 minute countdown timer to turn off lights
+#   trigger:
+#     platform: state
+#     entity_id: binary_sensor.fibaro_system_fgms001_motion_sensor_sensor_2_0
+#     to: 'off'
+#   action:
+#     service: homeassistant.turn_on
+#     entity_id: script.office_lights
+
+# when the motion detected in the office activates and nobody in the family group is home send a pushbullet notification
+- alias: Motion alert (Office)
+  hide_entity: False
   trigger:
     platform: state
-    entity_id: binary_sensor.fibaro_system_fgms001_motion_sensor_sensor_2
+    entity_id: binary_sensor.fibaro_system_fgms001_motion_sensor_sensor_2_0
     from: 'off'
     to: 'on'
   condition:
     - condition: state
       entity_id: group.family
-      state: not_home
+      state: 'not_home'
     - condition: state
-      entity_id: input_boolean.motion_livingroom_override
+      entity_id: input_boolean.motion_office_override
       state: 'on'
   action:
       service: notify.notify
       data:
-        message: 'The living room Fibaro has detected motion'
-        title: 'Motion Alert - Living Room'
+        message: 'Motion detected in the office'
+        title: 'Motion Alert - Office'
 
+# when the family group changes to not home and the alarm is not in send a pushbullet notification
 - alias: Reminder to enable alarm
+  hide_entity: False
   trigger:
     platform: state
     entity_id: group.family
@@ -34,8 +59,22 @@
   condition:
     - condition: state
       entity_id: group.alarms
-      state: off
+      state: 'off'
   action:
     service: notify.notify
     data:
       title: 'Dont forget to enable the alarm!'
+
+
+# when the temperature in thomas's room reaches 25 send a pushbullet notification
+- alias: High temperature in Thomas' room
+  hide_entity: False
+  trigger:
+    platform: numeric_state
+    entity_id: sensor.fibaro_system_fgms001_motion_sensor_temperature_4_1
+    above: 25
+  action:
+    service: notify.notify
+    data:
+      message: "High Temperature - Thomas' room"
+      data: The temperature is currently {{ states("sensor.fibaro_system_fgms001_motion_sensor_temperature_4_1") }}

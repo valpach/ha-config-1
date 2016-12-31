@@ -9,18 +9,63 @@
 default_view:
   view: yes
   entities:
-    - group.family
     - group.weather
-    - group.living_room
-    - group.bedroom
     - group.network
+    - group.family
+    - group.batteries
+    - group.cameraconfig
+    - camera.drive
+    - camera.thomas
+    - camera.garden
+    - camera.hall
+
+officetab:
+  name: Office
+  view: yes
+  entities:
+    - group.office
+    - camera.drive
+
+thomastab:
+  name: Thomas
+  view: yes
+  entities:
+    - group.thomas_room
+    - group.camera_control
+    - camera.thomas
+
+bedroomtab:
+  name: Bedroom
+  view: yes
+  entities:
+    - group.bedroom
 
 devicestab:
   name: Devices
   view: yes
   entities:
     - group.locations
-    - group.allbatteries
+    - group.batteries
+
+camerastab:
+  name: Cameras
+  view: yes
+  entities:
+    - camera.drive
+    - camera.thomas
+    - camera.garden
+    - camera.hall
+    
+automationtab:
+  name: Automation
+  view: yes
+  entities:
+    - automation.high_temperature_in_thomas_room
+    - automation.motion_alert_office
+    - automation.no_motion_detected_begin_10_minute_countdown_timer_to_turn_off_lights
+    - automation.office_motion_detected_turn_lights_on
+    - automation.reminder_to_enable_alarm
+    - automation.restart_hass
 
 ####################################################################################
 #                                                                                  #
@@ -30,6 +75,13 @@ devicestab:
 #                                                                                  #
 ####################################################################################
 
+cameraconfig:
+  name: Cameras
+  entities:
+    - weblink.foscam_thomas
+    - weblink.foscam_drive
+    - weblink.foscam_hall
+    - weblink.foscam_garden
 
 network:
   name: Network
@@ -37,47 +89,62 @@ network:
     - input_boolean.restart_hass
     - sensor.speedtest_download
     - weblink.router
-    - weblink.cameras
+    - weblink.transmission
+    - weblink.motioneye
     - weblink.foscam_thomas
-
-weather:
-    name: Weather
-    entities:
-      - sensor.weather_apparent_temperature
-      - sensor.weather_summary
-
-locations:
-  name: Locations
-  entities:
-  - device_tracker.gregiphone
-  - device_tracker.gregsipad
-  - device_tracker.gregsipodtouch
-  - device_tracker.lynetteiphone
-  - device_tracker.lynettesipad    
 
 family:
   entities:
     - device_tracker.gregiphone
-    - sensor.greg_travel_time
     - device_tracker.lynetteiphone
 
-living_room:
-  name: Living Room
+weather:
+    name: Weather
+    entities:
+      - sensor.dark_sky_apparent_temperature
+      - sensor.dark_sky_summary
+
+office:
+  name: Office
   icon: mdi:sofa
   entities:
-    - input_boolean.motion_livingroom_override
-    - binary_sensor.fibaro_system_fgms001_motion_sensor_sensor_2
-    - sensor.fibaro_system_fgms001_motion_sensor_luminance_2
-    - sensor.fibaro_system_fgms001_motion_sensor_temperature_2
+    - input_boolean.motion_office_override
+    - switch.aeotec_smart_energy_switch_gen5_switch_3_0
+    - binary_sensor.fibaro_system_fgms001_motion_sensor_sensor_2_0
+    - sensor.fibaro_system_fgms001_motion_sensor_luminance_2_3
+    - sensor.fibaro_system_fgms001_motion_sensor_temperature_2_1
 
 bedroom:
   name: Bedroom
   entities:
     - media_player.bedroom
-    - sensor.fibaro_system_fgms001_motion_sensor_luminance_2
 
-allbatteries:
+thomas_room:
+  name: Thomas' Room
+  entities:
+    - binary_sensor.fibaro_4_motion
+    - sensor.fibaro_system_fgms001_motion_sensor_luminance_4_3
+    - sensor.fibaro_system_fgms001_motion_sensor_temperature_4_1
+
+camera_control:
+  name: Camera Control
+  entities:
+    - script.camera_thomas_bed
+    - script.camera_thomas_floor
+    - script.camera_thomas_door
+
+locations:
+  name: Locations
+  entities:
+  - device_tracker.gregsiphone
+  - device_tracker.gregsipad
+  - device_tracker.gregsipodtouch
+  - device_tracker.lynetteiphone
+  - device_tracker.lynettesipad
+
+
+batteries:
   name: Batteries
   entities:
-    - sensor.battery_fibaro_livingroom
+    - sensor.battery_fibaro_office
     - sensor.battery_gregiphone
