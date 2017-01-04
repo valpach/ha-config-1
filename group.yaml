@@ -87,6 +87,7 @@ network:
   name: Network
   entities:
     - input_boolean.restart_hass
+    - switch.executor
     - sensor.speedtest_download
     - weblink.router
     - weblink.transmission
@@ -110,6 +111,7 @@ office:
   entities:
     - input_boolean.motion_office_override
     - switch.aeotec_smart_energy_switch_gen5_switch_3_0
+    - switch.executor	
     - binary_sensor.fibaro_system_fgms001_motion_sensor_sensor_2_0
     - sensor.fibaro_system_fgms001_motion_sensor_luminance_2_3
     - sensor.fibaro_system_fgms001_motion_sensor_temperature_2_1
@@ -148,3 +150,4 @@ batteries:
   entities:
     - sensor.battery_fibaro_office
     - sensor.battery_gregiphone
+    - sensor.battery_applewatch

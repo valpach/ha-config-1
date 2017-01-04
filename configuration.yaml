@@ -11,7 +11,7 @@ http:
   # server_port: 443
   ssl_certificate: !secret ssl_certificate
   ssl_key: !secret ssl_key
-  
+
 ####################################################################################
 #                                                                                  #
 #                                                                                  #
@@ -73,10 +73,7 @@ weblink:
       url: http://192.168.1.65:9091/transmission/web/
 
 panel_iframe:
-  godaddy:
-    title: 'GoDaddy'
-    url: !secret godaddy_control_panel_url
-    icon: mdi:web
+# panel_iframe:
 
 shell_command:
   thomas_camera_bed: !secret thomas_camera_bed_url
@@ -118,6 +115,35 @@ script:
         data:
           entity_id: switch.aeotec_smart_energy_switch_gen5_switch_3
 
+
+####################################################################################
+#                                                                                  #
+#                                                                                  #
+#                                WAKE ON LAN                                       #
+#                                                                                  #
+#                                                                                  #
+####################################################################################
+
+switch:
+  - platform: command_line
+    switches:
+      pc:
+        command_off: !secret wol_command
+  - platform: wake_on_lan
+    mac_address: "40-8D-5C-C1-2F-4F"
+    name: "WOL"
+    host: "192.168.1.93"
+  - platform: template
+    switches:
+      executor:
+        value_template: '{{ states.switch.wol.state }}'
+        turn_on:
+          service: switch.turn_on
+          entity_id: switch.wol
+        turn_off:
+          service: switch.turn_off
+          entity_id: switch.pc
+
 ####################################################################################
 #                                                                                  #
 #                                                                                  #
@@ -125,6 +151,7 @@ script:
 #                                                                                  #
 #                                                                                  #
 ####################################################################################
+
 binary_sensor:
   - platform: template
     sensors:
@@ -132,7 +159,6 @@ binary_sensor:
         value_template: "{{ is_state('sensor.fibaro_system_fgms001_motion_sensor_burglar_4_10', '8') }}"
         sensor_class: motion
 
-        
 sensor:      
   - platform: speedtest 
     monitored_conditions:
@@ -154,6 +180,9 @@ sensor:
             {% else %}
                 Unknown
             {%- endif %}
+      battery_applewatch:
+        unit_of_measurement: '%'
+        value_template: '{{ states.device_tracker.gregsapple_watch.attributes.battery|round }}'
       battery_fibaro_office:
         friendly_name: 'Fibaro (Office)'
         unit_of_measurement: '%'
@@ -219,8 +248,8 @@ camera:
     name: Garden
     ip: 192.168.1.64
     username: greg
-    password: !secret foscam_garden_pass
-    
+    password: !secret api_password2
+
 ####################################################################################
 #                                                                                  #
 #                                                                                  #

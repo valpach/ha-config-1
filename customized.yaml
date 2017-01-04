@@ -26,6 +26,10 @@ switch.aeotec_smart_energy_switch_gen5_switch_3_0:
   friendly_name: Desk Lights
   icon: mdi:lightbulb
 
+switch.executor:
+  icon: mdi:monitor
+  friendly_name: Executor
+
 ####################################################################################
 #                                                                                  #
 #                                                                                  #
@@ -36,7 +40,7 @@ switch.aeotec_smart_energy_switch_gen5_switch_3_0:
 
 script.camera_thomas_bed:
   friendly_name: "Point camera at bed"
-  icon: mdi:bed
+  icon: mdi:hotel
 
 script.camera_thomas_floor:
   friendly_name: "Point camera at floor"
@@ -70,6 +74,10 @@ input_boolean.restart_hass:
 #                                                                                  #
 #                                                                                  #
 ####################################################################################
+
+sensor.battery_applewatch:
+  friendly_name: 'Apple Watch'
+  icon: mdi:watch
 
 sensor.battery_gregiphone:
   icon: mdi:cellphone-iphone
