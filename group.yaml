@@ -31,7 +31,7 @@ thomastab:
   view: yes
   entities:
     - group.thomas_room
-    - group.camera_control
+    - group.thomas_camera_control
     - camera.thomas
 
 bedroomtab:
@@ -51,6 +51,8 @@ camerastab:
   name: Cameras
   view: yes
   entities:
+    - group.hall_camera_control
+    - group.thomas_camera_control
     - camera.drive
     - camera.thomas
     - camera.garden
@@ -111,7 +113,7 @@ office:
   entities:
     - input_boolean.motion_office_override
     - switch.aeotec_smart_energy_switch_gen5_switch_3_0
-    - switch.executor	
+    - switch.executor
     - binary_sensor.fibaro_system_fgms001_motion_sensor_sensor_2_0
     - sensor.fibaro_system_fgms001_motion_sensor_luminance_2_3
     - sensor.fibaro_system_fgms001_motion_sensor_temperature_2_1
@@ -128,12 +130,18 @@ thomas_room:
     - sensor.fibaro_system_fgms001_motion_sensor_luminance_4_3
     - sensor.fibaro_system_fgms001_motion_sensor_temperature_4_1
 
-camera_control:
-  name: Camera Control
+thomas_camera_control:
+  name: Thomas' Camera Control
   entities:
     - script.camera_thomas_bed
     - script.camera_thomas_floor
     - script.camera_thomas_door
+
+hall_camera_control:
+  name: Hall Camera Control
+  entities:
+    - script.hall_camera_enable_detection
+    - script.hall_camera_disable_detection
 
 locations:
   name: Locations

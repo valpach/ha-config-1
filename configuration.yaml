@@ -72,13 +72,14 @@ weblink:
     - name: Transmission
       url: http://192.168.1.65:9091/transmission/web/
 
-panel_iframe:
 # panel_iframe:
 
 shell_command:
   thomas_camera_bed: !secret thomas_camera_bed_url
   thomas_camera_floor: !secret thomas_camera_floor_url
   thomas_camera_door: !secret thomas_camera_door_url
+  hall_camera_enable_detection: !secret hall_camera_enable_detection
+  hall_camera_disable_detection: !secret hall_camera_disable_detection
 
 script:
   camera_thomas_bed:
@@ -92,6 +93,14 @@ script:
   camera_thomas_door:
     sequence:
       - service: shell_command.thomas_camera_door
+
+  hall_camera_enable_detection:
+    sequence:
+      - service: shell_command.hall_camera_enable_detection
+
+  hall_camera_disable_detection:
+    sequence:
+      - service: shell_command.hall_camera_disable_detection
 
   office_lights:
     alias: "Turn on lights and set timer"

@@ -50,6 +50,14 @@ script.camera_thomas_door:
   friendly_name: "Point camera at door"
   icon: mdi:glassdoor
 
+script.hall_camera_enable_detection:
+  friendly_name: "Enable motion recording"
+  icon: mdi:camera
+
+script.hall_camera_disable_detection:
+  friendly_name: "Disable motion recording"
+  icon: mdi:camera-off
+
 ####################################################################################
 #                                                                                  #
 #                                                                                  #
@@ -153,6 +161,14 @@ weblink.cameras:
 #                                                                                  #
 #                                                                                  #
 ####################################################################################
+
+switch.wol:
+  hidden: true
+  homebridge_hidden: true
+
+switch.pc:
+  hidden: true
+  homebridge_hidden: true
 
 binary_sensor.fibaro_system_fgms001_motion_sensor_sensor_4_0:
   hidden: true
