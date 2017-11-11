@@ -1,0 +1,112 @@
+default_view:
+  view: yes
+  icon: mdi:home-assistant
+  entities:
+    - group.family
+    - group.lights
+    - group.motion
+    - group.weather
+    - camera.thomas
+    - camera.drive
+    - camera.garden
+    - camera.hall
+
+cameras:
+  view: yes
+  icon: mdi:cctv
+  entities:
+    - group.all_cameras
+
+rooms:
+  view: yes
+  entities:
+    - group.bedroom
+    - group.office
+    - group.thomas
+    - group.diningroom
+    - camera.thomas
+    - camera.hall
+
+network:
+  view: yes
+  entities:
+    - group.pi_status
+    - group.processes
+    - group.batteries
+
+all_cameras:
+  entities:
+    - camera.thomas
+    - camera.hall
+    - camera.drive
+    - camera.garden
+
+motion:
+  entities:
+    - binary_sensor.thomas_sensor
+    - binary_sensor.office_motion_sensor
+
+lights:
+  entities:
+    - light.bedroom
+    - light.dining_room
+    - switch.desk_lights_switch
+
+bedroom:
+  entities:
+    - media_player.bedroom
+    - light.bedroom
+
+diningroom:
+  entities:
+    - light.dining_room
+
+batteries:
+  entities:
+    - sensor.gregs_iphone_8_battery_level
+    - sensor.lynette_iphone_battery_level
+    - sensor.tradfri_remote_control
+    - sensor.tradfri_remote_control_2
+    - sensor.fibaro_office_battery_level
+    - sensor.fibaro_thomas_battery_level
+
+weather:
+  entities:
+    - sensor.dark_sky_apparent_temperature
+    - sensor.dark_sky_summary
+
+thomas:
+  entities:
+    - binary_sensor.thomas_sensor
+    - sensor.thomas_temperature
+    - sensor.thomas_luminance
+    
+office:
+  entities:
+    - switch.desk_lights_switch
+    - sensor.office_motion_temperature
+    - binary_sensor.office_motion_sensor
+    - sensor.office_motion_luminance
+    
+family:
+  entities:
+    - device_tracker.gregs_iphone_8
+    - device_tracker.lynette_iphone
+    
+pi_status:
+  name: Server Status
+  entities:
+    - sensor.average_load_1m
+    - sensor.average_load_5m
+    - sensor.average_load_15m
+    - sensor.ram_used
+    - sensor.disk_used_
+    - sensor.disk_used_mnt
+    - sensor.speedtest_download
+
+processes:
+  entities:
+    - sensor.process_transmissiondaemon
+    - sensor.process_openvpn
+    - sensor.process_plex_media_server
+    - sensor.process_pureftpd

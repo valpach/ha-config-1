@@ -1,0 +1,50 @@
+- action:
+  - data:
+      entity_id: switch.desk_lights_switch
+    service: switch.turn_on
+  alias: Turn on office lights on motion
+  condition: []
+  id: '1510272913093'
+  trigger:
+  - entity_id: binary_sensor.office_motion_sensor
+    platform: state
+    to: 'on'
+- action:
+  - data:
+      entity_id: switch.desk_lights_switch
+    service: switch.turn_off
+  alias: Turn off office lights
+  condition: []
+  id: '1510273028657'
+  trigger:
+  - entity_id: binary_sensor.office_motion_sensor
+    platform: state
+    to: 'off'
+    for:
+      minutes: 10
+- action:
+  - data:
+      entity_id: light.dining_room
+    service: light.turn_on
+  alias: Turn on dining room light when someone comes home
+  condition:
+  - after: sunset
+    after_offset: -02:00:00
+    condition: sun
+  id: '1510348109231'
+  trigger:
+  - entity_id: group.family
+    platform: state
+    to: home
+- action:
+  - data:
+      message: High disk usage on /
+      title: Alert
+    service: notify.ios_gregs_iphone_8
+  alias: Notify me when disk is getting full
+  condition: []
+  id: '1510357259596'
+  trigger:
+  - above: '75'
+    entity_id: sensor.disk_used_
+    platform: numeric_state

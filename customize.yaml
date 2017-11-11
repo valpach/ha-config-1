@@ -1,0 +1,95 @@
+group.all_lights: {}
+sun.sun:
+  hidden: true
+sensor.desk_lights_current:
+  hidden: true
+sensor.desk_lights_energy:
+  hidden: true
+sensor.desk_lights_power:
+  hidden: true
+sensor.desk_lights_previous_reading:
+  hidden: true
+sensor.desk_lights_voltage:
+  hidden: true
+switch.desk_lights_switch:
+  friendly_name: Office
+zwave.aeotec_zw090_zstick_gen5_eu:
+  hidden: true
+zwave.thomas:
+  hidden: true
+zwave.office_motion:
+  hidden: true
+zwave.desk_lights:
+  hidden: true
+sensor.thomas_alarm_level:
+  hidden: true
+sensor.thomas_alarm_type:
+  hidden: true
+sensor.thomas_burglar:
+  hidden: true
+sensor.thomas_general:
+  hidden: true
+sensor.thomas_seismic_intensity:
+  hidden: true
+sensor.thomas_sourcenodeid:
+  hidden: true
+sensor.dark_sky_apparent_temperature:
+  friendly_name: Outside Temperature
+sensor.dark_sky_summary:
+  friendly_name: Weather Summary
+sensor.gregs_iphone_8_battery_state:
+  hidden: true
+sensor.lynette_iphone_battery_state:
+  hidden: true
+sensor.office_motion_temperature:
+  friendly_name: Office Temperature
+binary_sensor.office_motion_sensor:
+  friendly_name: Office Motion
+group.office:
+  friendly_name: Office
+group.batteries:
+  friendly_name: Batteries
+group.weather:
+  friendly_name: Weather
+sensor.office_motion_general:
+  hidden: true
+sensor.office_motion_luminance:
+  friendly_name: Office Brightness
+device_tracker.lynette_iphone:
+  friendly_name: Lynette
+device_tracker.gregs_iphone_8:
+  friendly_name: Greg
+group.family:
+  friendly_name: Family
+binary_sensor.sensor:
+  friendly_name: Thomas' Room Motion
+group.thomas:
+  friendly_name: Thomas
+sensor.thomas_luminance:
+  friendly_name: Thomas' Room Brightness
+binary_sensor.thomas_sensor:
+  friendly_name: Thomas' Room Motion
+sensor.thomas_temperature:
+  friendly_name: Thomas' Room Temperature
+sensor.process_openvpn:
+  friendly_name: OpenVPN
+  icon: mdi:lock-open
+sensor.process_plex_media_server:
+  friendly_name: Plex Media Server
+  icon: mdi:plex
+sensor.process_pureftpd:
+  friendly_name: Pure FTP
+  icon: mdi:server-security
+sensor.process_transmissiondaemon:
+  friendly_name: Transmission
+  icon: mdi:magnet-on
+group.processes:
+  friendly_name: Processes
+group.bedroom:
+  friendly_name: Bedroom
+group.diningroom:
+  friendly_name: Dining Room
+group.lights:
+  friendly_name: Lights
+group.motion:
+  friendly_name: Motion

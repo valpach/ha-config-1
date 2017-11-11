@@ -1,284 +1,55 @@
 homeassistant:
-  name: Home
+  name: Home Farm Close
   latitude: !secret latitude
   longitude: !secret longitude
+  elevation: 10
   unit_system: metric
   time_zone: Europe/London
-  customize: !include customized.yaml
+  customize: !include customize.yaml
 
+frontend:
+  themes: !include themes.yaml
+config:
 http:
-  api_password: !secret api_password
-  # server_port: 443
+  api_password: !secret http_password
+  base_url: !secret base_url
   ssl_certificate: !secret ssl_certificate
   ssl_key: !secret ssl_key
 
-####################################################################################
-#                                                                                  #
-#                                                                                  #
-#                                COMPONENTS                                        #
-#                                                                                  #
-#                                                                                  #
-####################################################################################
-
 updater:
+group: !include groups.yaml
+automation: !include automations.yaml
+script: !include scripts.yaml
+sensor: !include sensors.yaml
+camera: !include cameras.yaml
+weblink: include weblinks.yaml
+discovery:
 history:
 logbook:
-frontend:
-discovery:
-recorder:
-  purge_days: 4
-
-ifttt:
-  key: !secret ifttt_key
-  
-automation: !include automation.yaml
+logger:
+  logs:
+    #suppress the foscam errors
+    urllib3.connectionpool: critical 
+map:
+sun:
+ios:
+device_tracker:
 
 zwave:
- usb_path: /dev/aeo
-#  polling_interval: 10000
-#  config: /srv/hass/hass_venv/lib/python3.4/site-packages/libopenzwave-0.3.1-py3.4-linux-armv7l.egg/config
-#  customize:
-#     sensor.fibaro_system_fgms001_motion_sensor_temperature_2:
-#        polling_intensity: 1
-
-device_tracker:
-  platform: icloud
-  username: !secret icloud_username
-  password: !secret icloud_password
-
-notify:
-  platform: pushbullet
-  api_key: !secret pushbullet_key
-
-logger:
-    default: info
-    logs:
-     group.settings: critical
-
-weblink:
-  entities:
-    - name: foscam_thomas
-      url: http://192.168.1.61/
-    - name: foscam_hall
-      url: http://192.168.1.63:88/
-    - name: foscam_drive
-      url: http://192.168.1.62:88/
-    - name: foscam_garden
-      url: http://192.168.1.64:88/                
-    - name: MotionEye
-      url: !secret motioneye_url
-    - name: router
-      url: http://192.168.1.254/0000012803/gui/#/main/
-    - name: Transmission
-      url: http://192.168.1.65:9091/transmission/web/
-
-# panel_iframe:
-
-shell_command:
-  thomas_camera_bed: !secret thomas_camera_bed_url
-  thomas_camera_floor: !secret thomas_camera_floor_url
-  thomas_camera_door: !secret thomas_camera_door_url
-  hall_camera_enable_detection: !secret hall_camera_enable_detection
-  hall_camera_disable_detection: !secret hall_camera_disable_detection
-
-script:
-  camera_thomas_bed:
-    sequence:
-      - service: shell_command.thomas_camera_bed
-
-  camera_thomas_floor:
-    sequence:
-      - service: shell_command.thomas_camera_floor
-
-  camera_thomas_door:
-    sequence:
-      - service: shell_command.thomas_camera_door
-
-  hall_camera_enable_detection:
-    sequence:
-      - service: shell_command.hall_camera_enable_detection
-
-  hall_camera_disable_detection:
-    sequence:
-      - service: shell_command.hall_camera_disable_detection
-
-  office_lights:
-    alias: "Turn on lights and set timer"
-    sequence:
-      - service: script.turn_off
-        data: 
-          entity_id: script.office_lights_off
-      - service: switch.turn_on
-        data:
-          entity_id: switch.aeotec_smart_energy_switch_gen5_switch_3
-      - service: script.turn_on
-        data:
-          entity_id: script.office_lights_off
-
-  office_lights_off:
-    alias: "Turn off lamp after 10 minutes"
-    sequence:
-      - delay:
-          minutes: 10
-      - service: switch.turn_off
-        data:
-          entity_id: switch.aeotec_smart_energy_switch_gen5_switch_3
-
-
-####################################################################################
-#                                                                                  #
-#                                                                                  #
-#                                WAKE ON LAN                                       #
-#                                                                                  #
-#                                                                                  #
-####################################################################################
-
-switch:
-  - platform: command_line
-    switches:
-      pc:
-        command_off: !secret wol_command
-  - platform: wake_on_lan
-    mac_address: "40-8D-5C-C1-2F-4F"
-    name: "WOL"
-    host: "192.168.1.93"
-  - platform: template
-    switches:
-      executor:
-        value_template: '{{ states.switch.wol.state }}'
-        turn_on:
-          service: switch.turn_on
-          entity_id: switch.wol
-        turn_off:
-          service: switch.turn_off
-          entity_id: switch.pc
-
-####################################################################################
-#                                                                                  #
-#                                                                                  #
-#                                SENSORS                                           #
-#                                                                                  #
-#                                                                                  #
-####################################################################################
-
-binary_sensor:
-  - platform: template
-    sensors:
-      fibaro_4_motion:
-        value_template: "{{ is_state('sensor.fibaro_system_fgms001_motion_sensor_burglar_4_10', '8') }}"
-        sensor_class: motion
-
-sensor:      
-  - platform: speedtest 
-    monitored_conditions:
-      - download
-      
-  - platform: darksky
-    api_key: !secret darksky_key
-    monitored_conditions:
-      - summary
-      - apparent_temperature
-      
-  - platform: template
-    sensors:
-      battery_gregiphone:
-        unit_of_measurement: '%'
-        value_template: >-
-            {%- if states.device_tracker.gregiphone.attributes.battery %}
-                {{ states.device_tracker.gregiphone.attributes.battery|round }}
-            {% else %}
-                Unknown
-            {%- endif %}
-      battery_applewatch:
-        unit_of_measurement: '%'
-        value_template: '{{ states.device_tracker.gregsapple_watch.attributes.battery|round }}'
-      battery_fibaro_office:
-        friendly_name: 'Fibaro (Office)'
-        unit_of_measurement: '%'
-        value_template: >- # the battery for the Fibaro seems to jump around the different entities so keep looking for it on each until it's found
-          {%- if states.sensor.fibaro_system_fgms001_motion_sensor_luminance_2.attributes.battery_level %}
-
-            {{ states.sensor.fibaro_system_fgms001_motion_sensor_luminance_2.attributes.battery_level }}
-
-          {% elif states.sensor.fibaro_system_fgms001_motion_sensor_temperature_2.attributes.battery_level %}
-
-            {{ states.sensor.fibaro_system_fgms001_motion_sensor_temperature_2.attributes.battery_level }}
-
-          {% else %}
-            Unknown
-          {%- endif %} 
-
-####################################################################################
-#                                                                                  #
-#                                                                                  #
-#                                ZONES                                             #
-#                                                                                  #
-#                                                                                  #
-####################################################################################
-
+  usb_path: /dev/ttyACM0
+  
+tradfri:
+  host: 192.168.1.97
+  allow_tradfri_groups: false
 zone:
   - name: SEL
     latitude: 53.201563
     longitude: -0.590652
     icon: mdi:laptop-mac
 
-  - name: School
-    latitude: 53.269164
-    longitude: -0.657602
-    icon: mdi:school
+shell_command: !include shell_commands.yaml
 
-####################################################################################
-#                                                                                  #
-#                                                                                  #
-#                                CAMERAS                                           #
-#                                                                                  #
-#                                                                                  #
-####################################################################################
-camera:
-  - platform: mjpeg
-    name: Thomas
-    mjpeg_url: http://192.168.1.61/videostream.cgi
-    username: greg
-    password: !secret api_password
-  
-  - platform: foscam
-    name: Drive
-    ip: 192.168.1.62
-    username: greg
-    password: !secret api_password2
+switch:
+  - platform: wake_on_lan
+    mac_address: 40-8D-5C-C1-2F-4F
     
-  - platform: foscam
-    name: Hall
-    ip: 192.168.1.63
-    username: greg
-    password: !secret api_password2
-          
-  - platform: foscam
-    name: Garden
-    ip: 192.168.1.64
-    username: greg
-    password: !secret api_password2
-
-####################################################################################
-#                                                                                  #
-#                                                                                  #
-#                                INPUTS                                            #
-#                                                                                  #
-#                                                                                  #
-####################################################################################
-
-input_boolean:
-  restart_hass:
-    initial: off
-  motion_office_override:
-    initial: on
-    
-####################################################################################
-#                                                                                  #
-#                                                                                  #
-#                                GROUPS                                            #
-#                                                                                  #
-#                                                                                  #
-####################################################################################
-    
-group: !include group.yaml

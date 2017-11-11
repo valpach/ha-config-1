@@ -1,0 +1,26 @@
+- platform: mjpeg
+  name: Thomas
+  mjpeg_url: http://192.168.1.61/videostream.cgi
+  username: greg
+  password: !secret api_password
+
+- platform: foscam
+  name: Drive
+  ip: 192.168.1.62
+  port: 88
+  username: greg
+  password: !secret api_password2
+
+- platform: foscam
+  name: Hall
+  ip: 192.168.1.63
+  port: 88
+  username: greg
+  password: !secret api_password2
+
+- platform: foscam
+  name: Garden
+  ip: 192.168.1.64
+  port: 88
+  username: greg
+  password: !secret api_password2 

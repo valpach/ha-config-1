@@ -1,0 +1,38 @@
+- platform: speedtest 
+  monitored_conditions:
+    - download
+  minute:
+    - 1
+    - 31
+
+- platform: darksky
+  api_key: !secret darksky_key
+  monitored_conditions:
+    - summary
+    - apparent_temperature
+
+- platform: systemmonitor
+  name: pi_status
+  resources:
+    - type: disk_use_percent
+      arg: /
+    - type: disk_use_percent
+      arg: /mnt
+    - type: memory_use_percent
+    - type: load_1m
+    - type: load_5m
+    - type: load_15m
+    - type: process
+      arg: transmission-daemon
+    - type: process
+      arg: Plex Media Server
+    - type: process
+      arg: pure-ftpd
+    - type: process
+      arg: openvpn
+      
+- platform: template
+  sensors:
+    fibaro_office_battery_level:
+      unit_of_measurement: '%'
+      value_template: "{{ states.zwave.office_motion.attributes.battery_level }}"

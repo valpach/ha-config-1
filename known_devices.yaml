@@ -1,0 +1,18 @@
+
+gregs_iphone_8:
+  hide_if_away: false
+  icon:
+  mac:
+  name: Greg's iPhone 8
+  picture:
+  track: true
+  vendor:
+
+lynette_iphone:
+  hide_if_away: false
+  icon:
+  mac:
+  name: lynette iphone
+  picture:
+  track: true
+  vendor:

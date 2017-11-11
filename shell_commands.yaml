@@ -1,0 +1,6 @@
+thomas_camera_reboot: !secret thomas_camera_reboot
+thomas_camera_bed: !secret thomas_camera_bed_url
+thomas_camera_floor: !secret thomas_camera_floor_url
+thomas_camera_door: !secret thomas_camera_door_url
+hall_camera_enable_detection: !secret hall_camera_enable_detection
+hall_camera_disable_detection: !secret hall_camera_disable_detection
