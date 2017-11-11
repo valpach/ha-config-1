@@ -93,3 +93,25 @@ group.lights:
   friendly_name: Lights
 group.motion:
   friendly_name: Motion
+group.links:
+  friendly_name: Links
+weblink.foscam_drive:
+  friendly_name: Drive
+  icon: mdi:cctv
+weblink.foscam_garden:
+  friendly_name: Garden
+  icon: mdi:cctv
+weblink.foscam_hall:
+  friendly_name: Hall
+  icon: mdi:cctv
+weblink.foscam_thomas:
+  friendly_name: Thomas
+  icon: mdi:cctv
+weblink.pihole:
+  friendly_name: PiHole
+  icon: mdi:adjust
+weblink.router:
+  friendly_name: Router
+  icon: mdi:router-wireless
+weblink.transmission:
+  icon: mdi:magnet-on

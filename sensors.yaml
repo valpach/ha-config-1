@@ -36,3 +36,12 @@
     fibaro_office_battery_level:
       unit_of_measurement: '%'
       value_template: "{{ states.zwave.office_motion.attributes.battery_level }}"
+    fibaro_thomas_battery_level:
+      unit_of_measurement: '%'
+      value_template: "{{ states.zwave.thomas.attributes.battery_level }}"
+      
+- platform: pi_hole
+  monitored_conditions:
+    - ads_blocked_today
+    - ads_percentage_today
+    - unique_clients

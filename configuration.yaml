@@ -22,14 +22,16 @@ automation: !include automations.yaml
 script: !include scripts.yaml
 sensor: !include sensors.yaml
 camera: !include cameras.yaml
-weblink: include weblinks.yaml
+weblink: !include weblinks.yaml
 discovery:
 history:
 logbook:
 logger:
   logs:
     #suppress the foscam errors
-    urllib3.connectionpool: critical 
+    urllib3.connectionpool: critical
+    homeassistant.components.http: warn
+    libopenzwave: warn
 map:
 sun:
 ios:

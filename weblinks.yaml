@@ -1,0 +1,15 @@
+entities:
+  - name: foscam_thomas
+    url: http://192.168.1.61/
+  - name: foscam_hall
+    url: http://192.168.1.63:88/
+  - name: foscam_drive
+    url: http://192.168.1.62:88/
+  - name: foscam_garden
+    url: http://192.168.1.64:88/
+  - name: router
+    url: http://192.168.1.254/0000012803/gui/#/main/
+  - name: Transmission
+    url: http://192.168.1.65:9091/transmission/web/
+  - name: PiHole
+    url: http://192.168.1.65/admin/index.php
