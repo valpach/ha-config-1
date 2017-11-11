@@ -32,6 +32,11 @@ logger:
     urllib3.connectionpool: critical
     homeassistant.components.http: warn
     libopenzwave: warn
+    homeassistant.components.zwave.util: warn
+    openzwave: warn
+    homeassistant.components.websocket_api: warn
+    homeassistant.components.zwave: warn
+    coap: warn
 map:
 sun:
 ios:

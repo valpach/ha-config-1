@@ -33,6 +33,8 @@ network:
     - group.pi_status
     - group.processes
     - group.batteries
+    - group.links
+    - group.pihole_stats
 
 all_cameras:
   entities:
@@ -40,6 +42,16 @@ all_cameras:
     - camera.hall
     - camera.drive
     - camera.garden
+
+links:
+  entities:
+    - weblink.foscam_drive
+    - weblink.foscam_garden
+    - weblink.foscam_hall
+    - weblink.foscam_thomas
+    - weblink.pihole
+    - weblink.router
+    - weblink.transmission
 
 motion:
   entities:
@@ -104,6 +116,13 @@ pi_status:
     - sensor.disk_used_mnt
     - sensor.speedtest_download
 
+pihole_stats:
+  name: PiHole Stats
+  entities:
+    - sensor.pihole_ads_blocked_today
+    - sensor.pihole_ads_percentage_blocked_today
+    - sensor.pihole_dns_unique_clients
+    
 processes:
   entities:
     - sensor.process_transmissiondaemon
