@@ -68,6 +68,7 @@ bedroom:
   entities:
     - media_player.bedroom
     - light.bedroom
+    - switch.flux
 
 diningroom:
   entities:

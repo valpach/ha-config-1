@@ -48,3 +48,14 @@
   - above: '75'
     entity_id: sensor.disk_used_
     platform: numeric_state
+- action:
+  - data:
+      title: House is empty. Enabling motion sensors...
+    service: notify.ios_gregs_iphone_8
+  alias: Alert when house is empty
+  condition: []
+  id: '1510432731633'
+  trigger:
+  - entity_id: group.family
+    platform: state
+    to: not_home

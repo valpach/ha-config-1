@@ -53,4 +53,6 @@ shell_command: !include shell_commands.yaml
 switch:
   - platform: wake_on_lan
     mac_address: 40-8D-5C-C1-2F-4F
-    
+  - platform: flux
+    lights:
+      - light.bedroom
